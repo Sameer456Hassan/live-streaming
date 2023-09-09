@@ -1,5 +1,4 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-
 import Home from "./Pages/Home";
 import Live from "./Pages/Live";
 import { useEffect } from "react";
