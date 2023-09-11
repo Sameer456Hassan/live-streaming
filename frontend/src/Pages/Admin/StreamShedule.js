@@ -39,6 +39,32 @@ export default function StreamShedule() {
         console.error("Error:", error);
       });
   }
+  function makePostRequest() {
+    Axios.post(process.env.REACT_APP_BACK_URL + "/get_stream")
+      .then((response) => {
+        console.log(response.data.streaming);
+        var live_rep = response.data.streaming;
+        setbutton_Class(() => {
+          if (live_rep === 1) {
+            return {
+              class: "btn-danger",
+              text: "Stop Streaming",
+            };
+          } else {
+            return {
+              class: "btn-primary",
+              text: "Start Streaming",
+            };
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  // Set up an interval to call the function every second
+  setInterval(makePostRequest, 10000);
 
   return (
     <>

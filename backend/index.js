@@ -4,30 +4,18 @@ const cors = require('cors');
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); 
-
+app.use(express.json());
 
 const mysql = require('mysql');
 
 const connection = mysql.createConnection({
-  host: 'mysql',
+  host: 'localhost',
   user: 'root',
   password: '',
   database: 'church',
 });
 
 connection.connect();
-
-app.post('/auth', function (req, res) {
-  const streamkey = req.body.key;
-
-  if (streamkey === 'supersecret') {
-    res.status(200).send();
-    return;
-  }
-
-  res.status(403).send();
-});
 
 app.get('/', function (req, res) {
   res.send('abcd');
@@ -47,6 +35,18 @@ app.post('/streaming', function (req, res) {
   });
 });
 
-app.listen(8000, function () {
-  console.log('listening on port 8000!');
+app.post('/get_stream', function (req, res) {
+  // Insert the data into the database
+  const query = `SELECT * FROM streaming WHERE id=1`;
+
+  connection.query(query, function (error, results, fields) {
+    if (error) throw error;
+
+    console.log('Data inserted:', results);
+    res.send(results[0]);
+  });
+});
+
+app.listen(8010, function () {
+  console.log('listening on port 8010!');
 });
